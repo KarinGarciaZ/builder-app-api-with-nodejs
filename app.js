@@ -12,6 +12,9 @@
   const env = require('dotenv');
   env.config();
 
+  const Order = require('./models/order/order.routes')
+  app.use('/order', Order);
+
   const portExpress = process.env.EXPRESS_PORT;
   const hostExpress = process.env.EXPRESS_HOST;
 
