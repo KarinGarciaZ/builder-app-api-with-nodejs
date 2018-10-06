@@ -16,12 +16,25 @@ Order.getAll = ( res, cb ) => {
 
 Order.save = ( order, res, cb ) => {
   if ( connection ) {
-    connection.query('INSERT INTO orders SET ?', [order], (error, data) => {
-      if (error){
-        return cb( error, res );
-      }
-      return cb( null, res, data );
-    })
+    connection.beginTransaction( err => {
+      if ( err ) return cb(err, res);
+      connection.query('INSERT INTO orders SET ?', [order], (error, data) => {
+        if (error){
+          return connection.rollback( () => {
+            return cb( error, res );            
+          })
+        } else {
+          return connection.commit( erro => {
+            if( erro ) {
+              return connection.rollback(() => {
+                return cb( erro, res );
+              })
+            }
+            return cb( null, res, data );
+          })          
+        }
+      })      
+    })    
   } else {
     return cb('There was an error in the connection to MySQL :(', res)
   }
