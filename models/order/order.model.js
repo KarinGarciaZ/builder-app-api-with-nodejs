@@ -27,6 +27,16 @@ Order.save = ( order, res, cb ) => {
   }
 }
 
+Order.initialIngredients = ( res, cb ) => {
+  let ingredients = {
+    salad: 0,
+    bacon: 0,
+    cheese: 0,
+    meat: 1
+  }
+  cb( null, res, ingredients )
+}
+
 Order.responceToClient = ( error, res, data ) => {
   if ( error )
     res.status(500).json(error);

@@ -15,12 +15,15 @@ router
     address: req.body.address,
     email: req.body.email
   }
-
-  return Order.save( order, res, Order.responceToClient );
+  return Order.save( order, res, Order.responceToClient );  
 })
 
 .get('/', ( req, res ) => {
   return Order.getAll( res, Order.responceToClient );
+})
+
+.get('/initialIngredients', ( req, res ) => {
+  return Order.initialIngredients( res, Order.responceToClient );
 })
 
 module.exports = router;
